@@ -20,14 +20,14 @@ int main()
 {
     GLFWwindow* window = windowInit();
 
-    Shader ourShader("assets/shaders/shader.vert", "assets/shaders/shader.frag");
-    Model ourModel("assets/models/backpack.obj");
+    Shader ourShader("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
+    Model ourModel("../assets/models/backpack.obj");
 
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
         // --------------------
-        float currentFrame = static_cast<float>(glfwGetTime());
+        auto currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         glfwPollEvents();
@@ -66,9 +66,9 @@ GLFWwindow* windowInit() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
 
-    if (window == NULL)
+    if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
