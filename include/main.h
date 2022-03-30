@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include "glad.h"
-#include "GLFW/glfw3.h"
+#include "glfw3.h"
 
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
