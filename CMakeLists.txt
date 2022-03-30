@@ -30,18 +30,18 @@ find_library(glfw ${glfw3_BUILD_DIR}/src)
 
 set(imgui_src  ${imgui_SOURCE_DIR}/imgui.cpp
         ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
         ${imgui_SOURCE_DIR}/imgui_tables.cpp
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp)
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
 
 add_executable(OGL src/main.cpp
         src/glad.c
-        ${imgui_SOURCE_DIR}/imgui.cpp
-        ${imgui_SOURCE_DIR}/imgui_draw.cpp
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp)
-target_link_libraries(OGL PRIVATE assimp glm::glm glfw )
+        src/gui.cpp
+        ${imgui_src})
 
-
+target_link_libraries(OGL PRIVATE assimp glm::glm glfw dl)
 
 include_directories(${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/include/glad
