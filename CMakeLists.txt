@@ -2,9 +2,12 @@ cmake_minimum_required(VERSION 3.21)
 project(OGL)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_MAKE_PROGRAM ninja)
 include(FetchContent)
-
+include(ExternalProject)
 find_package(OpenGL)
+
+add_library(mod src/glad.c src/gui.cpp)
 
 set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -16,8 +19,6 @@ FetchContent_Declare(assimp GIT_REPOSITORY https://github.com/assimp/assimp.git 
 FetchContent_Declare(glm GIT_REPOSITORY https://github.com/g-truc/glm.git GIT_TAG 0.9.9.8)
 FetchContent_Declare(glfw3 GIT_REPOSITORY https://github.com/glfw/glfw.git GIT_TAG 3.3.6)
 FetchContent_Declare(imgui GIT_REPOSITORY https://github.com/ocornut/imgui.git GIT_TAG v1.87)
-
-add_executable(OGL src/main.cpp src/glad.c src/gui.cpp)
 
 FetchContent_GetProperties(imgui)
 if (NOT imgui_POPULATED)
@@ -32,10 +33,15 @@ if (NOT imgui_POPULATED)
     target_link_libraries(imgui glfw)
 endif()
 
-FetchContent_MakeAvailable(assimp glm glfw3 imgui)
+FetchContent_MakeAvailable(glfw3 glm assimp imgui)
+find_package(Bullet REQUIRED)
 
+target_link_libraries(mod imgui glfw glm assimp dl OpenGL ${BULLET_LIBRARIES})
+
+
+add_executable(OGL src/main.cpp)
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/glad ${CMAKE_SOURCE_DIR}/include/KHR/
         ${assimp_SOURCE_DIR}/include/assimp ${glm_SOURCE_DIR}/glm ${glfw3_SOURCE_DIR}/include/GLFW ${imgui_SOURCE_DIR}
-        ${imgui_SOURCE_DIR}/backends)
+        ${imgui_SOURCE_DIR}/backends ${bullet_SOURCE_DIR}/include ${BULLET_INCLUDE_DIR})
 
-target_link_libraries(OGL imgui assimp glfw dl OpenGL)
+target_link_libraries(OGL mod)
